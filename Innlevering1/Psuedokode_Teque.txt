@@ -1,0 +1,31 @@
+Psuedokode for Teque:
+
+push_back:
+input: nytt element
+output: ingenting
+Procedure push_back(nyElem)
+    back.append(nyElem)
+    rett_opp()
+
+push_front:
+input: nytt element
+output: ingenting
+Procedure push_front(nyElem)
+    front.appendleft(nyElem)
+    rett_opp()
+
+push_middle:
+input: nytt element
+output: ingenting
+Procedure push_middle(nyElem)
+    front.append(nyElem)
+    rett_opp()
+
+get:
+input: index
+output: gitt element
+Procedure __getitem__(index)
+    if index < front.lenght then
+        return front[index]
+    else then
+        return back[index - front.lenght]
