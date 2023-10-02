@@ -6,7 +6,7 @@ class NodeAVL:
         self.value = newValue
         self.right = None
         self.left = None
-        self.height = 0
+        self.height = 1
     
 
 class AVL(BST):
@@ -14,7 +14,7 @@ class AVL(BST):
         super().__init__()
 
     def getHeight(self, node):
-        if node is None:
+        if not node:
             return 0
         return node.height
 
@@ -22,24 +22,51 @@ class AVL(BST):
         node.height = 1 + max(self.height(node.left), self.height(node.right))
 
     def balanceFactor(self, node):
-        if node is None:
+        if not node:
             return 0
         return self.getHeight(node.left) - self.getHeight(node.right)
         
-    def balance(self, node):
-        if node is None:
+    def balance_afterInsert(self, node, newValue):
+        if not node:
             return node
         
-        self.setHeight(node)
+        # self.setHeight(node)
+        bf = self.balanceFactor(node)
 
-        if self.balanceFactor(node) > 1:
-            if self.balanceFactor(node.left) < 0:
+        if bf > 1:
+            if newValue < node.left.value:
+                return self.right_rotate(node)
+            else:
                 node.left = self.left_rotate(node.left)
-            return self.right_rotate(node)
-        if self.balanceFactor(node) < -1:
-            if self.balanceFactor(node.right) > 0:
+                return self.right_rotate(node)
+        
+        if bf < -1:
+            if newValue > node.right.value:
+                return self.left_rotate(node)
+            else:
                 node.right = self.right_rotate(node.right)
-            return self.left_rotate(node)
+                return self.left_rotate(node)
+            
+        return node
+    
+    def balance_afterRemove(self, node):
+        # self.setHeight(node)
+        bf = self.balanceFactor(node)
+
+        if bf > 1:
+            if self.balanceFactor(node.left) >= 0:
+                return self.right_rotate(node)
+            else:
+                node.left = self.left_rotate(node.left)
+                return self.right_rotate(node)
+        
+        if bf < -1:
+            if self.balanceFactor(node.right) <= 0:
+                return self.left_rotate(node)
+            else:
+                node.right = self.right_rotate(node.right)
+                return self.left_rotate(node)
+            
         return node
 
     def right_rotate(self, z): 
@@ -71,18 +98,46 @@ class AVL(BST):
 
     #hjelpeprosedyre til insert()
     def insert_recursive(self, node, newValue):#ikke endra på fra foil
-        if node is None:
+        if not node:
             return NodeAVL(newValue)
 
         elif newValue < node.value:
             node.left = self.insert_recursive(node.left, newValue)
         
-        elif newValue > node.value:
+        else:
             node.right = self.insert_recursive(node.right, newValue)
         
-        NodeAVL.setHeight(node)
-        return self.balance(node)
+        self.setHeight(node)
+        return self.balance_afterInsert(node, newValue)
     
+    def delete(self, node, inpValue):
+        if not node:
+            return node
+
+        if inpValue < node.value:
+            node.left = self.delete(node.left, inpValue)
+        elif inpValue > node.value:
+            node.right = self.delete(node.right, inpValue)
+        else:
+            if node.left is None:
+                temp = node.right
+                node = None
+                return temp
+            elif node.right is None:
+                temp = node.left
+                node = None
+                return temp
+        
+            temp = self.findMin_alt(node.right)#prøv begge findmn metoder
+            node.value = temp.value
+            node.right = self.remove_recursive(node.right, temp.value)
+        
+        if node is None:
+            return node
+        
+        self.setHeight(node)
+        return self.balance_afterRemove(node)
+
     def remove(self, inpValue):
         self.root = self.remove_recursive(self.root, inpValue) #remove og remove_recursive funke ikke, sjekk forelesningfoil om bst
     
@@ -96,15 +151,19 @@ class AVL(BST):
             node.right = self.remove_recursive(node.right, inpValue)
         else:
             if node.left is None:
-                return node.right
+                temp = node.right
+                node = None
+                return temp
             if node.right is None:
-                return node.left
+                temp = node.left
+                node = None
+                return temp
         
-            temp = self.findMin_notRecursive(node.right)
+            temp = self.findMin_alt(node.right)#prøv begge findmn metoder
             node.value = temp.value
             node.right = self.remove_recursive(node.right, temp.value)
             
-            NodeAVL.setHeight(node)
+        self.setHeight(node)
         return self.balance(node)
     
     def contains(self, newValue):
@@ -131,6 +190,27 @@ class AVL(BST):
         if root is None:
             return 0
         return 1 + self.size_recursive(root.left) + self.size_recursive(root.right)
+    
+    def findMin_recursive(self, node):
+        min = node
+        if min is None:
+            print("input for 'findMin()' is None")
+            return
+        if min.left is None:
+            return min
+        return self.findMin_recursive(min.left)
+
+    #findMin metode som ikke er rekursiv som også funker
+    def findMin_notRecursive(self, node):
+        min = node
+        while min.left is not None:
+            min = min.left
+        return min 
+    
+    def finMin_alt(self, node):
+        if node is None or node.left is None:
+            return node
+        return self.findMin_Alt(node.left)
 
     
 def main():
@@ -150,7 +230,7 @@ def main():
             elif stringInp == "contains":
                 output.append(avl.contains(intInp))
             elif stringInp == "remove":
-                avl.remove(intInp)
+                avl.delete(intInp)
         else:
             output.append(avl.size())
     
