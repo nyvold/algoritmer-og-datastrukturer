@@ -96,7 +96,7 @@ class AVL(BST):
             node.right = self.remove_recursive(node.right, inpValue)
         else:
             if node.left is None:
-                return temp
+                return node.right
             if node.right is None:
                 return node.left
         
