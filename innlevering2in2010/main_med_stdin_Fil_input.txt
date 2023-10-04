@@ -1,0 +1,24 @@
+def main(): 
+    bst = BST()
+    output = []
+
+    inp = input()
+    fileContent = open(inp).readlines()
+    for line in fileContent:
+        stringList = line.split()
+        if len(stringList) > 1:
+            stringInp = stringList[0]
+            intInp = stringList[1]
+            if stringInp == "insert":
+                bst.insert(intInp)
+            elif stringInp == "contains":
+                output.append(bst.contains(intInp))
+            elif stringInp == "remove":
+                bst.remove(intInp)
+        else:
+            output.append(bst.size())
+    
+    print("\nOutput:")
+    for out in output:
+        print(out)
+ 
