@@ -28,35 +28,42 @@ class BST:#binary search tree, binert søke tre klassen
             node.right = self.insert_recursive(node.right, newValue)
         
         return node
+
+    def visualize(self):
+        self.visualize_recursive(self.root)
+
+    def visualize_recursive(self, root):
+        if not root is None:
+            self.visualize_recursive(root.left)
+            print(root.value)
+            self.visualize_recursive(root.right)
     
     def remove(self, inpValue):
-        self.root = self.remove_recursive(self.root, inpValue) #remove og remove_recursive funke ikke, sjekk forelesningfoil om bst
-    
+        if self.contains(inpValue) == True:
+            self.root = self.remove_recursive(self.root, inpValue) 
+        print(f"node med verdi: '{inpValue}' finnes ikke")
+
     #hjelpemetode for remove()
-    def remove_recursive(self, node, inpValue):
-        if node is None:
-            return node
+    def remove_recursive(self, root, inpValue):
+        if root is None:
+            return root
 
-        if inpValue < node.value:
-            node.left = self.remove_recursive(node.left, inpValue)
-            # return node
-        if inpValue > node.value:
-            node.right = self.remove_recursive(node.right, inpValue)
-            # return node
-        else:
-            if node.left is None:
-                return node.right
-            if node.right is None:
-                return node.left
-        
-            temp = self.findMin_notRecursive(node.right)
-            node.value = temp.value
-            node.right = self.remove_recursive(node.right, temp.value)
-
-        return node
+        if inpValue < root.value:
+            root.left = self.remove_recursive(root.left, inpValue)
+        if inpValue > root.value:
+            root.right = self.remove_recursive(root.right, inpValue)
+        else: #funnet noden vi skal fjerne
+            if root.left is None and root.left is None:
+                root = None
+            elif root.right is not None:
+                root.value = self.findMax_notRecursive(root)
+                root.right = self.remove_recursive(root.right, root.value)
+            else:
+                root.value = self.findMin_notRecursive(root)
+                root.left = self.remove_recursive(root.left, root.value)
     
     # hjelemetode som finner noden med minst verdi fra en gitt node, for å brukes i remove()
-    def findMin(self, node):
+    def findMin(self, node):a
         return self.findMin_recursive(node)
     
     #hjelpemetode til hjelpemetoden findMin()
@@ -68,13 +75,19 @@ class BST:#binary search tree, binert søke tre klassen
         if min.left is None:
             return min
         return self.findMin_recursive(min.left)
-
+    # finner største verdi under fra gitt node 
+    def findMax_notRecursive(self, node):
+        max = node
+        while max.right is not None:
+            max = max.right
+        return max.value
+    
     #findMin metode som ikke er rekursiv som også funker
     def findMin_notRecursive(self, node):
         min = node
         while min.left is not None:
             min = min.left
-        return min 
+        return min.value 
 
     def contains(self, newValue):
         return self.contains_recursive(self.root, newValue)
@@ -84,10 +97,10 @@ class BST:#binary search tree, binert søke tre klassen
         if node is None:
             return False
 
-        if node.value == newValue:
+        elif node.value == newValue:
             return True
 
-        if newValue < node.value:
+        elif newValue < node.value:
             return self.contains_recursive(node.left, newValue)
         
         elif newValue > node.value:
@@ -101,55 +114,33 @@ class BST:#binary search tree, binert søke tre klassen
             return 0
         return 1 + self.size_recursive(root.left) + self.size_recursive(root.right)
 
-    #eksempel input:
-    # 9
-    # insert 1  
-    # insert 2  
-    # insert 3  
-    # insert 1  
-    # contains 1 
-    # contains 0
-    # remove 1
-    # contains 1
-    # size
-    # output:
-    # true
-    # false 
-    # false 
-    # 2
-def main(): #fiks input fra terminal
+def main(): 
     bst = BST()
     output = []
-    bst.insert(1)
-    bst.insert(2)
-    bst.insert(3)
-    bst.insert(1)
-    print(bst.contains(1))
-    print(bst.contains(0))
-    bst.remove(1)
-    print(bst.contains(1))
-    print(bst.size())
-    # inpInt = int(sys.stdin.readline())
-    # output = []
 
-    # for _ in range(inpInt):
-    #     inp = sys.stdin.readline()
-    #     print(inp)
-    #     if inp != "size":
-    #         stringList = inp.split()
-    #         stringInp = stringList[0]
-    #         intInp = int(stringList[1])
-    #     else:
-    #         output.append(bst.size())
+    inpInt = int(sys.stdin.readline())
 
-    #     if stringInp == "insert":
-    #         bst.insert(intInp)
-    #     elif stringInp == "contains":
-    #         output.append(bst.contains(intInp))
-    #     elif stringInp == "remove":
-    #         bst.remove(intInp)
-            
+    for _ in range(inpInt):
+        inp = sys.stdin.readline()
+        stringList = inp.split()
+        if len(stringList) > 1:
+            stringInp = stringList[0]
+            intInp = stringList[1]
+            if stringInp == "insert":
+                bst.insert(intInp)
+            elif stringInp == "contains":
+                output.append(bst.contains(intInp))
+            elif stringInp == "remove":
+                bst.remove(intInp)
+        else:
+            output.append(bst.size())
+    
+    print("\nOutput:")
+    for out in output:
+        print(out)
 
-    # for out in output:
-    #     print(out)
+    f = open(f"BST_{inpInt}_test.txt", 'w')
+    for line in output:
+        f.write(f"{line}\n")
+    f.close()
 main()
