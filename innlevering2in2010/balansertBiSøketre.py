@@ -1,4 +1,3 @@
-import sys
 
 class NodeAlg:
     def __init__(self, value):
@@ -26,18 +25,13 @@ class balansertBiSøketre:
 def main(): 
     bbs = balansertBiSøketre()
     listTemp = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    list2 = [1, 2, 3, 4, 5, 6, 7]
     convertedList = bbs.convert(listTemp)
-    print(listTemp)
-    print(convertedList)
-    # inpInt = int(sys.stdin.readline())
-
-    # for _ in range(inpInt):
-    #     inp = sys.stdin.readline()
-    #     stringList = inp.split()
         
-    # print("\nOutput:")
-    # for out in list:
-    #     print(out)
+    print("\nInput:")
+    for line in listTemp:
+        print(line)
+    print("\nOutput:")
+    for out in convertedList:
+        print(out)
 
 main()
