@@ -1,5 +1,6 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 import csv
+# import graphviz
 
 class Graph:
 
@@ -20,8 +21,6 @@ class Graph:
                 ttid, title, rating, _ = row
                 self.movies[ttid] = {"title":title, "rating":rating}
                 v.add(ttid)
-        
-        
         # file.close()
         
         with open(f"{actorfilepath}", "r") as file:
@@ -43,6 +42,34 @@ class Graph:
 
         return v, e, w 
 
+    def bfs_find_shortestpath_from(self, actor) -> dict:
+        _, E, _ = self.v, self.e, self.w
+        visited = set()
+        parents = {actor : None}
+        queue = deque([actor])
+
+        while queue:
+            u = queue.popleft()
+            for node in E[u]:
+                if node not in parents:
+                    parents[node] = u
+                    queue.append(node)
+        return parents
+    
+    def bfs_shortest_path_between(self, actor1: str, actor2: str) -> list:
+        parents = self.bfs_find_shortestpath_from(actor1)
+        v = actor2
+        path = []
+
+        if actor2 not in parents:
+            return path
+
+        while v:
+            path.append(v)
+            v = parents[v]
+
+        return path[::-1]
+
 def main():
 
     testg = Graph("marvel_movies", "marvel_actors")
@@ -56,6 +83,8 @@ def main():
 
     print(f"nodes: {num_nodes}")
     print(f"edges: {num_edges}")
+
+    print(g.bfs_shortest_path_between("nm2255973", "nm8076281"))
 
     
 
