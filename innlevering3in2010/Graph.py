@@ -70,22 +70,32 @@ class Graph:
 
         return path[::-1]
 
-def main():
-
-    testg = Graph("marvel_movies", "marvel_actors")
-    # num_nodestest = len(testg.v)
-    # num_edgestest = sum(len(adj_list) for adj_list in testg.e.values()) // 2
-
-    g = Graph("movies", "actors")
-
-    num_nodes = len(g.v)
-    num_edges = sum(len(adj_list) for adj_list in g.e.values()) // 2
-
-    print(f"nodes: {num_nodes}")
-    print(f"edges: {num_edges}")
-
-    print(g.bfs_shortest_path_between("nm2255973", "nm8076281"))
-
     
+    def dijkstra(self, actor1, actor2):
+        _, e, w = self.v, self.e, self.w
+        queue = [(0, actor1)]
+        dist = defaultdict(lambda: float('inf'))
+        dist[actor1] = 0
+        parents = {}
 
-main()
+        while queue:
+            cost, u = heappop(queue)
+            if cost != dist[u]:
+                continue
+
+            for node in e[u]:
+                c = cost + w[(u, node)]
+                if c < dist[node]:
+                    parents[node] = u
+                    dist[node] = c
+                    heappush(queue, (c, node))
+        
+        path = [actor2]
+        weight = 0
+        current = actor2
+        while current != actor1:
+            current = parents[current]
+            path.append(current)
+        
+        return reversed(path), dist[actor2]
+    
