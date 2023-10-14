@@ -1,6 +1,7 @@
 from collections import defaultdict, deque
 import csv
 # import graphviz
+from heapq import heappush, heappop
 
 class Graph:
 
@@ -69,7 +70,6 @@ class Graph:
             v = parents[v]
 
         return path[::-1]
-
     
     def dijkstra(self, actor1, actor2):
         _, e, w = self.v, self.e, self.w
@@ -84,7 +84,7 @@ class Graph:
                 continue
 
             for node in e[u]:
-                c = cost + w[(u, node)]
+                c = cost + (10 - w[(u, node)])
                 if c < dist[node]:
                     parents[node] = u
                     dist[node] = c
@@ -97,5 +97,4 @@ class Graph:
             current = parents[current]
             path.append(current)
         
-        return reversed(path), dist[actor2]
-    
+        return reversed(path), dist[actor2] / 2
