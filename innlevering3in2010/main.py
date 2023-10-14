@@ -14,6 +14,7 @@ def main():
         actor2 = "nm8076281"
         actor3 = "nm0000288"
         actor4 = "nm0424060"
+        actor5 = "nm0000460"
 
         #oppgave 2
         output = []
@@ -27,7 +28,7 @@ def main():
                 output.append(f"[ {title} ({rating}) ]\n    v")
         
         #oppgave 3
-        inpDijkstra = g.dijkstra(actor3, actor4)
+        inpDijkstra = g.dijkstra(actor4, actor2)
         dijkstra_path = inpDijkstra[0]
         dijkstra_weight = inpDijkstra[1]
         output_dijkstra = []
