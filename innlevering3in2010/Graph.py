@@ -1,6 +1,6 @@
 from collections import defaultdict, deque
 import csv
-# import graphviz
+import graphviz
 from heapq import heappush, heappop
 
 class Graph:
@@ -42,6 +42,25 @@ class Graph:
         # file.close()
 
         return v, e, w 
+
+    def drawgraph(self):
+        v, e, w = self.v, self.e, self.w
+        dot = graphviz.Digraph()
+        seen_edges = set()
+        for node in v:      
+            if node.startswith("tt"):
+                name = self.movies.get(node, {}).get("title", node)
+            else:
+                name = self.actors.get(node, {}).get("name", node)
+
+            dot.node(node, label=name)    
+
+            for v in e[node]:
+                if (v, node) in seen_edges:
+                    continue
+                seen_edges.add((v, node))
+                dot.edge(node, v, label=str(w[node, v]))
+        dot.render('graph', format='png')
 
     def bfs_find_shortestpath_from(self, actor) -> dict:
         _, E, _ = self.v, self.e, self.w
@@ -98,3 +117,5 @@ class Graph:
             path.append(current)
         
         return reversed(path), dist[actor2] / 2
+
+    
