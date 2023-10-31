@@ -1,23 +1,21 @@
 
 class Binaryheap:
+    arr = []
     
-    def __init__(self):
-        root = self.arr[0]
-        arr = []
 
     def insert(self, v: int):
-        self.arr[len(self.arr)-1] = v #legger nytt element sist i heapen
+        self.arr.append(v)#legger nytt element sist i heapen
         i = len(self.arr)-1 #i peker på siste indeks i heapen
         while i > 0 and self.arr[i] < self.arr[self.parentOf(i)]:#while i er større enn 0 og mindre en foreldrenoden til i
             self.arr[i], self.arr[self.parentOf(i)] = self.arr[self.parentOf(i)], self.arr[i] #swapper element på indeks i og element som er foreldrenoden til i
             i = self.parentOf(i) #i endres til foreldrenoden av i, altså det som ble swappet
     
-    def removeMin(self):
+    def removeMin(self) -> int:
         removed = self.arr[0]#husker det slettede elementet
         self.arr[0] = self.arr.pop() #swapper root og siste element og sletter det som var root, altså minste element
         i = 0
-        while self.rightOf(i) < len(self.arr)-1:#mens i har et høyrebarn, altså vi er ikke utfor arrayet og vi har garantert et venstrebarn
-            j = self.arr[self.leftOf(i)] if self.arr[self.leftOf(i)] <= self.arr[self.rightOf(i)] else self.arr[self.rightOf(i)]
+        while self.rightOf(i) < len(self.arr)-2:#mens i har et høyrebarn, altså vi er ikke utfor arrayet og vi har garantert et venstrebarn
+            j = self.leftOf(i) if self.arr[self.leftOf(i)] <= self.arr[self.rightOf(i)] else self.rightOf(i)
             #^^^ variabelen j blir hva som er det minst av venstre eller høyre barn
             if self.arr[j] > self.arr[i]:#hvis vi har nådd riktig plass for elementet så stopper vi
                 break
@@ -43,11 +41,38 @@ class Binaryheap:
         return self.arr.pop() #popper minste element og returnerer det
 
 
-    def parentOf(i: int) -> int:
-        return i-1//2
+    def parentOf(self, i: int) -> int:
+        return (i-1)//2
     
-    def leftOf(i: int) -> int:
+    def leftOf(self, i: int) -> int:
         return 2*i+1
     
-    def rightOf(i: int) -> int:
+    def rightOf(self, i: int) -> int:
         return 2*i+2
+    
+def main():
+    bh = Binaryheap()
+    bh.insert(1)
+    bh.insert(2)
+    bh.insert(7)
+    bh.insert(6)
+    bh.insert(8)
+    bh.insert(9)
+    bh.insert(11)
+    bh.insert(14)
+    bh.insert(4)
+    print(bh.arr)
+    bh.removeMin()
+    print(bh.arr)
+    bh.removeMin()
+    print(bh.arr)
+    bh.removeMin()
+    print(bh.arr)
+    bh.removeMin()
+    print(bh.arr)
+    bh.removeMin()
+    print(bh.arr)
+    bh.removeMin()
+    print(bh.arr)
+
+main()
