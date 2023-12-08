@@ -1,0 +1,70 @@
+sortering 2
+
+heapsort
+ideen:
+får et array A, gjør det array om til til max heap.
+deretter flytte største element bak i listen helt til arrayet er sortert.
+måten det gjøres er at vi har en peker i som starter bakerst, swapper A[0] og A[i]
+så må vi bubbledowne elementet vi swappa med for at det skal holde seg som en max heap.
+gjør dette helt til array er sortert
+
+--------------------Heapsort--------------------
+
+heapsort(A)
+heapify(A)
+N -> A.length
+i -> N-1
+for _ in range N:
+    A[0], A[i] -> A[i], A[0]
+    bubbledown(A)
+    i -> i - 1
+
+heapify(A)
+for i in range N/2
+    bubbledown(A, i)
+    i = i - 1
+
+bubbledown(A, i)
+    largest -> i
+    left -> 2i+1
+    right -> 2i+2
+    n -> A.length
+    if left < n and A[largest] < A[left] then:
+        A[largest], A[left] -> A[left], A[largest]   
+    if right < n and A[largest] < A[right] then:
+        A[largest], A[right] -> A[right], A[largest]
+    if i != largest then:
+        A[i], A[largest] -> A[largest], A[i]
+        bubbledown(A, largest)
+
+
+    
+--------------------bucketsort--------------------
+
+ideen:
+    man har en liste med lister, eller lettere sagt, en liste med n antall "bøtter"
+    disse bøttene har hver sine regler, for eksempel bøtte 1 er 0-9 og bøtte 2 er 10-19 osv.
+    eller hvis vi sorterer kort så kan hver bøtte holde hver sin type.
+    så først legger vi alt inni disse bøttene etter reglene også sorteres hver bøtte, etter det er gjort legger vi sammen bøttene i riktig rekkefølge og vi får et sortert array av noe.
+
+
+bucketsort(A)
+B = en liste med N antall "buckets"
+for i in range fra 0 til N-1 do:
+    k = nøkkel assosiert med A[i]
+    legg til A[i] til slutten av listen som er B[k]
+j = 0
+for i in range fra 0 til N-1 do:
+    for each x in B[i] do:
+        A[i] = x
+        j = j + 1
+return A
+
+--------------------radixsort--------------------
+basically det samme som bucket sort, men man ser på hva tall verdiene slutter med osv
+
+--------------------quicksort--------------------
+Ideen er å velge et element, så 
+    Samle alt som er mindre enn elementet til venstre for det
+    Samle alt som er større enn elementet til hæyre for det
+Gjør dette rekursivt

@@ -1,0 +1,66 @@
+oppgave: Finn par som summerer til x, eksamen h21
+
+
+Input: Et array A av heltall, og et heltall x
+Output: Skriver ut alle par y, z ∈ A slik at y + z = x
+Procedure FindSummands(A, x)  #finner i et usortert array, O(n^2)
+pairs -> []
+for i in range from 0 to N-1 with increment 2 do:     #der N er A.length
+    for j in range from i+1 to N-1 with increment 2 do:
+        if i+j == x then:
+            pairs.append((i, j))
+return pairs
+
+a: Skriv en prosedyre FindSummands som beskrevet over, med antagelsen om at A er sortert fra minst til størst.
+
+Input: Et array A av heltall, og et heltall x
+Output: Skriver ut alle par y, z ∈ A slik at y + z = x
+Procedure FindSummands(A, x)  #finner i et sortert array
+pairs -> []
+for i in range from 0 to N-1 with increment 1 do:  #N er A.length
+    for j in range from N-1 to i with increment -1 do:
+        if i+j == x then:
+            pairs.append((i,j))
+return pairs
+O(n) kjøretid
+Input: Et array A av heltall, og et heltall x
+Output: Skriver ut alle par y, z ∈ A slik at y + z = x
+Procedure FindSummands(A, x)  #finner i et sortert array finpusset
+i = 0
+j = A.length
+for _ in range A.length
+    if A[i]+A[j] == x then:
+        print((A[i], A[j]))
+    i += 1
+    j -= 1
+kjøretid O(n) lineærtid
+
+
+b:  Skriv en prosedyre FindSummands som beskrevet over, men du kan ikke anta at A er sortert. Hint: Du kan anta O(1) for innsetting, oppslag og sletting i hashbaserte datastrukturer.
+
+Input: Et array A av heltall, og et heltall x
+Output: Skriver ut alle par y, z ∈ A slik at y + z = x
+Procedure FindSummands(A, x)  #finner i et usortert array
+sort(A)
+i = 0
+j = A.length
+for _ in range A.length
+    if A[i]+A[j] == x then:
+        print((A[i], A[j]))
+    i += 1
+    j -= 1
+
+Procedure sort(A)  #bucket sort som hjelpemetode
+B = en liste med N antall "bøtter"
+for i in range from 0 to A.length - 1 do:
+    k = nøkkel assosiert med A[i]
+    B[k].append(A[i])   #A[i] legges til slutten av listen som er B[k]
+j = 0
+k = 0
+for _ in range from 0 to A.length - 1 do:
+    for hver x i B[k] do:
+    A[j] = x
+    j = j + 1
+    k = k + 1
+
+kjøretid, sortere A O(n) + O(n) for selve algoritmen, så O(n) totalt

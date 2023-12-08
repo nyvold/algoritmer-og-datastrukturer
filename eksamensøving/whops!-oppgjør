@@ -1,0 +1,28 @@
+Whops!-oppgjør
+eksamen h21
+
+Ideen:
+finner komponentgrafen C til G, så sjekker vi alle komponenter i C og hvis en komponent summerer til 0 returneres false, ellers returneres true, fordi da vet vi at oppgjør er mulig. finner komponentgrafen til G ved hjelp av dfs
+
+IsOppgjorPossible(G, T):
+V, E <- G
+visited <- []
+components <- []
+for v in V do:
+    component <- []
+    if v not in visited then:
+        dfsVisit(G, v, visited, component)
+    components.append(component)
+for c in components do:
+    amount <- 0
+    for v in c do:
+        amount <- amount + T[v]
+    if amount != 0 then:
+        return false
+return true
+
+dfsVisit(G, v, visited):
+for (u, e) in v do:
+    if u not in visited then:
+        dfsVisit(G, u, visited)
+    component.append(u)

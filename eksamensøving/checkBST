@@ -1,0 +1,25 @@
+
+# innvariant for et binært søketre er at for hver node i treet så skal noden være mindre
+# enn alle noder i høyre subtre og større enn alle noder i venstre subtre
+
+# ideen:
+#     sjekke alle noder at den er mindre enn det minste elementet i høyre subtre og
+#     større enn det største elementet i venstre subtre med hjelp av metodene findmin og findmax
+
+def checkBST(v): #kjøretiden er O(n^2) fordi for hver node n gjør vi noe lineært
+    def findMin(node):
+        pass
+    def findMax(node):
+        pass
+    def checkBST_rec(node):
+        if node == None:
+            return True
+        if not node.element < findMin(node.right) and node.element > findMax(node.left):
+            return False
+        
+        return checkBST_rec(node.left) and checkBST_rec(node.right)
+        
+    return checkBST_rec(v)
+
+
+    
